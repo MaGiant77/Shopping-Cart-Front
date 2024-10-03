@@ -1,0 +1,67 @@
+import { createSlice, payload } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+const initialState = {
+    posts : [],
+    status : 'idle',
+    error : null
+}
+
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
+    async () =>{
+        try {
+            const response = await fetch("http://localhost:5000/productList",{
+                method:"get",
+            });
+            if(response.ok){
+                console.log("responsed",response.json());
+                console.log("response ok");
+                return response.json();
+                // console.log("Suceesed", result.length===0? "No" : "Ok");
+            } else{
+                console.error("Error", response.statusText);
+            }   
+        }
+        catch(err){
+                console.log("catched error", err);
+        }
+    },
+    {
+        condition(arg, thunkApi){
+            const postsStatus = selectPostsStatus(thunkApi.getState())
+            if(postsStatus !== 'idle'){
+                return false;
+            }
+        },
+    },
+)
+
+const postsSlice = createSlice({
+    name : 'posts',
+    initialState,
+    reducers : {
+        extraReducers : (builder) =>{
+            builder
+                .addCase(fetchPosts.pending, (state, action) => {
+                    console.log("pending")
+                    state.status = 'pending';
+                })
+                .addCase(fetchPosts.fulfilled, (state, action) => {
+                    console.log("succeed");
+                    state.status = 'succeeded';
+                    state.posts = action.payload;
+                })
+                .addCase(fetchPosts.rejected, (state, action) => {
+                    console.log("rejected");
+                    state.status = 'rejected';
+                    state.error = action.error.message ?? 'Unknown Error';
+                })
+        }
+    }
+})
+
+export default postsSlice.reducer;
+export const selectAllPosts = (state) => state.posts.posts;
+export const selectPostsStatus = (state) => state.posts.status;
+export const selectPostsError = (state) => state.posts.error;
