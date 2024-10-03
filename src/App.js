@@ -1,26 +1,20 @@
 import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import LoginPage from './container/loginpage';
-import MainPage from './container/mainpage';
-import {addCars} from './features/addcars';
-import { selectTasks } from './features/addcars';
-
-
-
+import AddCartPage from './container/addcartpage';
+import ShowCartPage from './container/showcartpage';
 
 
 export default function MyApp(){
-  const dispatch=useDispatch();
-  const tasks=useSelector(selectTasks);
-  
+
    return (
-    <Router>
+    <BrowserRouter>
          <Routes>
           <Route path='/' element={<LoginPage />} />
-          <Route path='/add/*' element={<MainPage />} />
+          <Route path='/addCart' element={<AddCartPage />} />
+          <Route path='/showCart' element={<ShowCartPage />} />
          </Routes>
-    </Router>
+    </BrowserRouter>
       
    );
 }

@@ -1,7 +1,7 @@
 import LiList from "../component/lilist"
 import NavBar from "../component/navbar"
 import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { addCars } from "../features/addcars";
 import { selectTasks } from "../features/addcars";
 import { navPage } from "../features/navpage";

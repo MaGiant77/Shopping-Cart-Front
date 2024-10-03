@@ -1,8 +1,10 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import { useState} from "react";
+import { user } from "../features/users";
+import { useDispatch } from "react-redux";
   
 const LoginPage=()=>{
+    const dispatch=useDispatch();
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
@@ -30,7 +32,14 @@ const LoginPage=()=>{
                     alert("Wrong Password");
                 }
                 else {
-                    navigate('/add');
+                    const newUser = {
+                        userGrade : result[0].userGrade,
+                        userName : result[0].userName,
+                        userPassword : result[0].userPassword
+                    }
+                    console.log(newUser);
+                    dispatch(user(newUser));
+                    navigate('/addCart');
                 }
                 // console.log("Suceesed", result.length===0? "No" : "Ok");
             } else{
