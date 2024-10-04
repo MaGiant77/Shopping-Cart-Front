@@ -1,10 +1,18 @@
 import { selectTasks } from "../features/addcars";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../features/users";
 
 const NavBar = ()=>{
     const navigate = useNavigate();
     const cars=useSelector(selectTasks);
+    const user = useSelector(getUser);
+    let admin;
+    if(user.userGrade===0){
+        admin = true;
+    } else if(user.userGrade===1){
+        admin = false;
+    }
     console.log("cars",cars);
     let total=0;
     total=cars.reduce((sum, car)=>{
@@ -35,11 +43,25 @@ const NavBar = ()=>{
                                 <button 
                                 className="rounded-md px-3 py-2 text-sm font-medium 
                                     text-white bg-gray-900"
-                                aria-current="page" id="addBtn" onClick={handleAddCart}>Add Cars</button>
+                                aria-current="page" id="addBtn" onClick={handleAddCart}>Add Cart</button>
                                 
                             </div>
                             
                         </div>
+                       { admin && (<div className="block">
+                            <div className="ml-10 flex items-baseline space-x-4">
+                                <button 
+                                className="rounded-md px-3 py-2 text-sm font-medium 
+                                    text-white bg-gray-900"
+                                aria-current="page" id="addBtn" onClick={
+                                    ()=>{
+                                        navigate("/addCarList");
+                                    }
+                                }>Add Cars List</button>
+                                
+                            </div>
+                            
+                        </div>)}
                     </div>
                     <div className="ml-4 flow-root lg:ml-6">
                         <a href="#" className="group -m-2 flex items-center p-2">
