@@ -11,11 +11,14 @@ import { Spinner } from "../component/Spinner";
 import { initCars } from "../features/addcars";
 
 const AddCartPage = ({setCarInitialized}) =>{
-    console.log(setCarInitialized);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const user = useSelector(getUser);
+    const posts = useSelector(selectAllPosts);
+    let postError = useSelector(selectPostsError);
+    const postsStatus = useSelector(selectPostsStatus);
+    let content;
     useEffect(() => {
-        console.log(user);
         if (!user.hasOwnProperty('userName')) {
             console.log("User does not exist");
             navigate("/"); // Only navigate when user does not have 'name'
@@ -23,42 +26,27 @@ const AddCartPage = ({setCarInitialized}) =>{
             console.log("User exists");
         }
     }, [user, navigate]);
-    const dispatch = useDispatch();
-    const cars=useSelector(selectTasks);
-    function handleAddCarVal(productName){
-        console.log(productName);
+    function handleAddCarVal(productName){  //if press add button, increase the count of car
         const car={productName:productName}
         dispatch(addCars(car));
     }
-    let content;
-    const posts = useSelector(selectAllPosts);
-    let postError = useSelector(selectPostsError);
-    const postsStatus = useSelector(selectPostsStatus);
-    console.log("postStatus", postsStatus);
     useEffect(()=>{
-        console.log("postEffect");
         if(postsStatus === 'idle'){
             console.log("fetch dispatched");
             dispatch((fetchPosts()));
         }
     }, [postsStatus])
     useEffect(()=>{
-        if(postsStatus ==='succeeded' && posts?.length >0 && setCarInitialized.current===false){
-            console.log("There is a post");
+        if(postsStatus ==='succeeded' && posts?.length >0 && setCarInitialized.current===false){  //if the page is first rendered after dispatching the data
             dispatch(initCars(posts));
-            console.log(posts);
             setCarInitialized.current =true;
-            
-        console.log("content",content);
         }
     }, [postsStatus, posts, dispatch, setCarInitialized]);
 
     if(postsStatus === 'pending') {
         content = <Spinner text="Loading.." />
     } else if(postsStatus === 'succeeded') {
-        console.log("insert content");
         content = posts.map((post, id)=>{
-            console.log("pN", post.productName);
             return (
             <li key={id} className="p-2 flex" >
                 <Task car={post.productName} onAddCarVal={handleAddCarVal} />
@@ -68,7 +56,7 @@ const AddCartPage = ({setCarInitialized}) =>{
         
 } else if(postsStatus === 'rejected'){
         content = <div>{postError}</div>
-    }
+}
     return (
         <>
         <NavBar/>
