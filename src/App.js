@@ -18,6 +18,5 @@ export default function MyApp(){
           <Route path='/addCarList' element={<AddCarList setCarInitialized={setCarInitialized} />} />
          </Routes>
     </BrowserRouter>
-      
    );
 }

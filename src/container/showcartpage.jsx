@@ -21,9 +21,9 @@ const ShowCartPage = () =>{
     const cars=useSelector(selectTasks);
     return (
         <>
-        <NavBar/>
-        <ShowCars cars={cars}
-        />
+            <NavBar/>
+            <ShowCars cars={cars}
+            />
         </>
     );
 }
