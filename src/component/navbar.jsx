@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const NavBar = ()=>{
     const navigate = useNavigate();
     const cars=useSelector(selectTasks);
-    // console.log(cars);
+    console.log("cars",cars);
     let total=0;
     total=cars.reduce((sum, car)=>{
         console.log(car.value);

@@ -1,5 +1,7 @@
 import { createSlice, payload } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { initCars } from "./addcars";
+// import { useDispatch } from "react-redux";
 
 const initialState = {
     posts : [],
@@ -7,6 +9,7 @@ const initialState = {
     error : null
 }
 
+// const dispatch = useDispatch();
 export const fetchPosts = createAsyncThunk(
     'posts/fetchPosts',
     async () =>{
@@ -15,10 +18,12 @@ export const fetchPosts = createAsyncThunk(
                 method:"get",
             });
             if(response.ok){
-                console.log("responsed",response.json());
                 console.log("response ok");
+                // console.log("responsed",response.json());
                 return response.json();
-                // console.log("Suceesed", result.length===0? "No" : "Ok");
+                // dispatch(initCars(data));
+                // return data;
+
             } else{
                 console.error("Error", response.statusText);
             }   
@@ -41,23 +46,23 @@ const postsSlice = createSlice({
     name : 'posts',
     initialState,
     reducers : {
-        extraReducers : (builder) =>{
-            builder
-                .addCase(fetchPosts.pending, (state, action) => {
-                    console.log("pending")
-                    state.status = 'pending';
-                })
-                .addCase(fetchPosts.fulfilled, (state, action) => {
-                    console.log("succeed");
-                    state.status = 'succeeded';
-                    state.posts = action.payload;
-                })
-                .addCase(fetchPosts.rejected, (state, action) => {
-                    console.log("rejected");
-                    state.status = 'rejected';
-                    state.error = action.error.message ?? 'Unknown Error';
-                })
-        }
+    },
+    extraReducers : (builder) =>{
+        builder
+            .addCase(fetchPosts.pending, (state, action) => {
+                console.log("pending")
+                state.status = 'pending';
+            })
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                console.log("succeed");
+                state.status = 'succeeded';
+                state.posts = action.payload;
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                console.log("rejected");
+                state.status = 'rejected';
+                state.error = action.error.message ?? 'Unknown Error';
+            })
     }
 })
 
