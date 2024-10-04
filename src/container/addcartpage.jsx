@@ -22,7 +22,7 @@ const AddCartPage = ({setCarInitialized}) =>{
         } else {
             console.log("User exists");
         }
-    }, [user]);
+    }, [user, navigate]);
     const dispatch = useDispatch();
     const cars=useSelector(selectTasks);
     function handleAddCarVal(productName){
